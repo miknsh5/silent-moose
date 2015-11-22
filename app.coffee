@@ -22,6 +22,8 @@ shadebg.placeBehind(artboardA)
 
 
 nodeSelected.visible = true
+isZoneShifted = false
+
 # nodeDetailsEditBtn.visible = false
 
 # ---------
@@ -48,9 +50,13 @@ nodeDetailsEditBtn.states.add
 	HoverBtn: opacity: 1, scale: 1.2
 
 nodeDeselected.states.add
-	Home: scale: 1, opacity: 1
-	Hover: scale: 1.1, opacity: 1
+	Home: scale: 0.8, opacity: 1
+	Hover: scale: 1.0, opacity: 1
 	Select: opacity: 0
+
+nodeZone.states.add
+	Home: y: 0
+	AddNode: y: -100
 	
 nodeSelected.states.add
 	Home: opacity: 0
@@ -70,17 +76,6 @@ nodeDetails.states.add
 layers = [nodeDetails, nodeSelected, nodeControls, nodeDeselected]
 btns = [nodeAddBtn, nodeAddBtnTop]
 
-# btnLayers = [nodeAddBtnTop, nodeAddBtn]
-# for btn in btnLayers
-# 	btn.states.add
-# 		Hover: opacity: 1, scale: 1.0
-# 		HoverA: opacity: 1, scale: 1.1
-# 		Home: opacity: 0, scale: 0.8
-# 		
-# 	btn.on Events.MouseOver, ->
-# # 		print('over')
-# 		btn.states.switch "HoverA"
-
 # 		
 # ---------
 # Initiate UI States
@@ -93,7 +88,8 @@ for btn in btns
 for layer in layers
 	#set all states to Home
 	layer.states.switchInstant "Home"
-	
+nodeZone.states.switchInstant "Home"
+
 #initiate draggable states
 nodeSelected.draggable.enabled = true
 nodeSelected.draggable.vertical = false
@@ -123,6 +119,10 @@ nodeSelected.on Events.Click, ->
 		for btn in btns
 			btn.states.switch "Home"
 
+		if isZoneShifted
+			nodeZone.states.switch "Home"
+			isZoneShifted = false
+			
 		nodeDeselected.states.switch "Select"
 		nodeSelected.states.switch "Select"
 		nodeDetails.states.switch "Select", delay: 0.1
@@ -145,3 +145,11 @@ nodeDetailsEditBtn.on Events.MouseOver, ->
 
 nodeDetailsEditBtn.on Events.MouseOut, ->
 	this.states.switch "Active"
+
+nodeAddBtn.on Events.Click, ->
+	if not isZoneShifted
+		this.states.switch "Home"
+		nodeZone.states.switch "AddNode"
+		isZoneShifted = true
+		for layer in layers
+			layer.states.switch "Home"	
