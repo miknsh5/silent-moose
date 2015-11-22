@@ -22,27 +22,35 @@ shadebg.placeBehind(artboardA)
 
 
 nodeSelected.visible = true
+# nodeDetailsEditBtn.visible = false
 
-# states
+# ---------
+# Define States
+# ---------
 shadebg.states.add
 	Home: opacity: 0
 	Hover: opacity: 0.8
 	Select: opacity: 1
 
 nodeAddBtn.states.add
-	Home: opacity: 0
-	Hover: opacity: 1
-	Select: opacity: 0
+	Home: opacity: 0, scale: 0.8
+	Active: opacity: 1, scale: 1.0
+	HoverBtn: opacity: 1, scale: 1.2
 
 nodeAddBtnTop.states.add
-	Home: opacity: 0
-	Hover: opacity: 1
-	Select: opacity: 0
-	
+	Home: opacity: 0, scale: 0.8
+	Active: opacity: 1, scale: 1.0
+	HoverBtn: opacity: 1, scale: 1.2
+		
+nodeDetailsEditBtn.states.add
+	Home: opacity: 0, scale: 0.8
+	Active: opacity: 1, scale: 1.0
+	HoverBtn: opacity: 1, scale: 1.2
+
 nodeDeselected.states.add
-	Home: scale: 1
-	Hover: scale: 1.1
-	Select: scale: 1
+	Home: scale: 1, opacity: 1
+	Hover: scale: 1.1, opacity: 1
+	Select: opacity: 0
 	
 nodeSelected.states.add
 	Home: opacity: 0
@@ -59,10 +67,29 @@ nodeDetails.states.add
 	Hover: opacity: 1
 	Select: opacity: 1
 
-layers = [nodeDetails, nodeSelected, nodeControls, nodeDeselected, nodeAddBtnTop, nodeAddBtn]
+layers = [nodeDetails, nodeSelected, nodeControls, nodeDeselected]
+btns = [nodeAddBtn, nodeAddBtnTop]
 
+# btnLayers = [nodeAddBtnTop, nodeAddBtn]
+# for btn in btnLayers
+# 	btn.states.add
+# 		Hover: opacity: 1, scale: 1.0
+# 		HoverA: opacity: 1, scale: 1.1
+# 		Home: opacity: 0, scale: 0.8
+# 		
+# 	btn.on Events.MouseOver, ->
+# # 		print('over')
+# 		btn.states.switch "HoverA"
+
+# 		
+# ---------
 # Initiate UI States
+# ---------
 shadebg.states.switchInstant "Home"
+nodeDetailsEditBtn.states.switchInstant "Home"
+
+for btn in btns
+	btn.states.switch "Home"
 for layer in layers
 	#set all states to Home
 	layer.states.switchInstant "Home"
@@ -73,35 +100,48 @@ nodeSelected.draggable.vertical = false
 nodeSelected.draggable.constraints = 
 	width: 400
 
-nodeSelected.on Events.MouseOver, ->
+# ---------
+# Events
+# ---------
+
+nodeZone.on Events.MouseOver, ->
 	if not isSelect
+		for btn in btns
+			btn.states.switch "Active"
 		for layer in layers
 			layer.states.switch "Hover"
-			
-# 		nodeAddBtn.states.switch "Hover"
-# 		nodeAddBtnTop.states.switch "Hover"
-# 		nodeSelected.states.switch "Hover"
-# 		nodeDeselected.states.switch "Hover"
-# 		nodeDetails.states.switch "Hover", delay: 0.1
-# 		nodeControls.states.switch "Hover", delay: 0.2
 
-nodeSelected.on Events.MouseOut, ->
-# 	print(isSelect)
+nodeZone.on Events.MouseOut, ->
 	if not isSelect
-		nodeAddBtn.states.switch "Home"
-		nodeSelected.states.switch "Home"
-		nodeDeselected.states.switch "Home"
-		nodeDetails.states.switch "Home", delay: 0.1
-		nodeControls.states.switch "Home", delay: 0.1
+		for btn in btns
+			btn.states.switch "Home"
+		for layer in layers
+			layer.states.switch "Home"	
 
 nodeSelected.on Events.Click, ->
 	if not isSelect
+		for btn in btns
+			btn.states.switch "Home"
+
+		nodeDeselected.states.switch "Select"
 		nodeSelected.states.switch "Select"
 		nodeDetails.states.switch "Select", delay: 0.1
 		nodeControls.states.switch "Select", delay: 0.1
+		nodeDetailsEditBtn.states.switch "Active", delay: .3
 		isSelect = true
 	else
+		for btn in btns
+			btn.states.switch "Active"
+
+		nodeDeselected.states.switch "Hover"
 		nodeSelected.states.switch "Hover"
 		nodeDetails.states.switch "Hover", delay: 0.1
 		nodeControls.states.switch "Hover", delay: 0.1
+		nodeDetailsEditBtn.states.switch "Home"
 		isSelect = false
+
+nodeDetailsEditBtn.on Events.MouseOver, ->
+	this.states.switch "HoverBtn"
+
+nodeDetailsEditBtn.on Events.MouseOut, ->
+	this.states.switch "Active"
