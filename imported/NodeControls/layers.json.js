@@ -5,6 +5,46 @@ window.__imported__["NodeControls/layers.json.js"] = [
     "children" : [
       {
         "maskFrame" : null,
+        "children" : [
+          {
+            "maskFrame" : null,
+            "id" : "02F6E1D1-4B76-4468-9895-245C9B3513DD",
+            "visible" : true,
+            "children" : [
+
+            ],
+            "image" : {
+              "path" : "images\/Layer-nodeNew-02F6E1D1-4B76-4468-9895-245C9B3513DD.png",
+              "frame" : {
+                "y" : 216,
+                "x" : 301,
+                "width" : 87,
+                "height" : 87
+              }
+            },
+            "imageType" : "png",
+            "layerFrame" : {
+              "y" : 216,
+              "x" : 301,
+              "width" : 87,
+              "height" : 87
+            },
+            "name" : "nodeNew"
+          }
+        ],
+        "id" : "9B883E2E-B638-4186-BF24-0E29A8F3FEAD",
+        "visible" : true,
+        "imageType" : "png",
+        "layerFrame" : {
+          "y" : 216,
+          "x" : 301,
+          "width" : 87,
+          "height" : 87
+        },
+        "name" : "nodeZoneNew"
+      },
+      {
+        "maskFrame" : null,
         "id" : "55AD31AF-FE7E-48C7-8021-E3C42B981907",
         "visible" : true,
         "children" : [
@@ -124,20 +164,35 @@ window.__imported__["NodeControls/layers.json.js"] = [
           },
           {
             "maskFrame" : null,
+            "children" : [
+              {
+                "maskFrame" : null,
+                "id" : "24A39183-4E58-4187-9A6B-816DD47DD72D",
+                "visible" : true,
+                "children" : [
+
+                ],
+                "image" : {
+                  "path" : "images\/Layer-nodeNew-24A39183-4E58-4187-9A6B-816DD47DD72D.png",
+                  "frame" : {
+                    "y" : 216,
+                    "x" : 301,
+                    "width" : 87,
+                    "height" : 87
+                  }
+                },
+                "imageType" : "png",
+                "layerFrame" : {
+                  "y" : 216,
+                  "x" : 301,
+                  "width" : 87,
+                  "height" : 87
+                },
+                "name" : "nodeNew"
+              }
+            ],
             "id" : "508AAF41-815C-4447-AA3C-C45C71073BC1",
             "visible" : true,
-            "children" : [
-
-            ],
-            "image" : {
-              "path" : "images\/Layer-nodeDeselected-508AAF41-815C-4447-AA3C-C45C71073BC1.png",
-              "frame" : {
-                "y" : 216,
-                "x" : 301,
-                "width" : 87,
-                "height" : 87
-              }
-            },
             "imageType" : "png",
             "layerFrame" : {
               "y" : 216,

@@ -11,29 +11,13 @@ Framer.Defaults.Animation =
 # Overlay
 isHome = true
 isSelect = false
-
-shadebg = new Layer
-	width: Screen.width
-	height: Screen.height
-	backgroundColor: "black"
-	opacity: 0.8
 	
-shadebg.placeBehind(artboardA)
-
-
 nodeSelected.visible = true
 isZoneShifted = false
-
-# nodeDetailsEditBtn.visible = false
 
 # ---------
 # Define States
 # ---------
-shadebg.states.add
-	Home: opacity: 0
-	Hover: opacity: 0.8
-	Select: opacity: 1
-
 nodeAddBtn.states.add
 	Home: opacity: 0, scale: 0.8
 	Active: opacity: 1, scale: 1.0
@@ -73,6 +57,10 @@ nodeDetails.states.add
 	Hover: opacity: 1
 	Select: opacity: 1
 
+nodeZoneNew.states.add
+	Home: opacity: 0
+	Active: opacity: 1
+
 layers = [nodeDetails, nodeSelected, nodeControls, nodeDeselected]
 btns = [nodeAddBtn, nodeAddBtnTop]
 
@@ -80,8 +68,8 @@ btns = [nodeAddBtn, nodeAddBtnTop]
 # ---------
 # Initiate UI States
 # ---------
-shadebg.states.switchInstant "Home"
 nodeDetailsEditBtn.states.switchInstant "Home"
+nodeZoneNew.states.switchInstant "Home"
 
 for btn in btns
 	btn.states.switch "Home"
@@ -91,15 +79,18 @@ for layer in layers
 nodeZone.states.switchInstant "Home"
 
 #initiate draggable states
-nodeSelected.draggable.enabled = true
-nodeSelected.draggable.vertical = false
-nodeSelected.draggable.constraints = 
-	width: 400
+# nodeSelected.draggable.enabled = true
+# nodeSelected.draggable.vertical = false
+# nodeSelected.draggable.constraints = 
+# 	width: 400
 
 # ---------
 # Events
 # ---------
-
+nodeAddBtnTop.on Events.MouseOver, ->
+	print('hover')
+	nodeAddBtnTop.states.switch "HoverBtn"
+	
 nodeZone.on Events.MouseOver, ->
 	if not isSelect
 		for btn in btns
@@ -121,6 +112,7 @@ nodeSelected.on Events.Click, ->
 
 		if isZoneShifted
 			nodeZone.states.switch "Home"
+			nodeZoneNew.states.switch "Home"
 			isZoneShifted = false
 			
 		nodeDeselected.states.switch "Select"
@@ -146,10 +138,13 @@ nodeDetailsEditBtn.on Events.MouseOver, ->
 nodeDetailsEditBtn.on Events.MouseOut, ->
 	this.states.switch "Active"
 
+
+	
 nodeAddBtn.on Events.Click, ->
 	if not isZoneShifted
 		this.states.switch "Home"
 		nodeZone.states.switch "AddNode"
+		nodeZoneNew.states.switch "Active"	
 		isZoneShifted = true
 		for layer in layers
 			layer.states.switch "Home"	
